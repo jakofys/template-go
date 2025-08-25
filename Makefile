@@ -1,6 +1,8 @@
 
-
-
+app?=app
+GOOS=linux
+GOARCH=amd64
+CGO_ENABLED=0 
 ### help: Print this help
 .DEFAULT: help
 help: #check build clean upload
@@ -21,18 +23,12 @@ help: #check build clean upload
 		}' $(MAKEFILE_LIST) | column -s$$'\t' -tL
 
 
+###@Lint Help: message for build_test_1
+lint-go:
+	go generate golangci-lint.go
+
 ###@Build Help: message for build_test_1
-build_test_1:
-	echo ""
+build-app:
+	@test -d cmd/$(app) || (echo "Folder 'cmd/$(app)' doesn't exists" && exit 1)
+	go build -o bin/$(app) -ldflags="-X main.Version=1.0.0" ./cmd/$(app)/... 
 
-###@Clean Help: message for clean_test_1
-clean_test_1:
-	echo ""
-
-###@Clean Help: message for clean_test_2
-clean_test_2:
-	echo ""
-
-###@Build Help: message for build_test_2
-build_test_2:
-	echo ""

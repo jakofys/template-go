@@ -1,3 +1,3 @@
 package gotemplate
 
-//go:generate github.com/golangci/golangci-lint/v2/cmd/golangci-lint run
+//go:generate go tool -modfile=golangci-lint.mod golangci-lint run
