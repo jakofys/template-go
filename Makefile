@@ -1,8 +1,11 @@
-
-app?=app
-GOOS=linux
-GOARCH=amd64
 CGO_ENABLED=0 
+
+
+### Parameters
+APP?=APP
+GOOS?=linux
+GOARCH?=amd64
+
 ### help: Print this help
 .DEFAULT: help
 help: #check build clean upload
@@ -23,12 +26,19 @@ help: #check build clean upload
 		}' $(MAKEFILE_LIST) | column -s$$'\t' -tL
 
 
-###@Lint Help: message for build_test_1
+###@Lint Help: lint go code in entiere project
 lint-go:
 	go generate golangci-lint.go
 
-###@Build Help: message for build_test_1
-build-app:
-	@test -d cmd/$(app) || (echo "Folder 'cmd/$(app)' doesn't exists" && exit 1)
-	go build -o bin/$(app) -ldflags="-X main.Version=1.0.0" ./cmd/$(app)/... 
+###@Lint Help: lint OpenAPI specification schemas
+lint-openapi:
 
+###@Build Help: build APP in bin folder, using 'APP=...' to choose which cmd to build
+build-app:
+	@test -d cmd/$(APP) || (echo "Folder 'cmd/$(APP)' doesn't exists" && exit 1)
+	go build -o bin/$(APP) -ldflags="-X main.Version=1.0.0" ./cmd/$(APP)/... 
+
+###@Generate Help: generate http go server code
+gen-http:
+	@test -d cmd/$(APP) || (echo "Folder 'cmd/$(APP)' doesn't exists" && exit 1)
+	go build -o bin/$(APP) -ldflags="-X main.Version=1.0.0" ./cmd/$(APP)/... 
